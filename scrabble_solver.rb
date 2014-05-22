@@ -1,9 +1,10 @@
-# This script will give all possible dictionary valid words bulit from anagram
+# I created this script for the sole purpose of beating my girl friend in scrabble
 
 def build_words
   # /usr/share/dict/words is a unix standard dictionary file
+  file_path = '/usr/share/dict/words'
   @words = []
-  File.open('/usr/share/dict/words') do |file|
+  File.open(file_path) do |file|
     file.each do |line|
       @words << line.chomp
     end
@@ -11,23 +12,18 @@ def build_words
 end
 
 def anagram_builder(input)
-  #story each letter of string into an array
-  word = input.split(%r{\s*})
-  @val = word.repeated_permutation(word.size).to_a
-  @val.map! { |t| t.join"" }
-  @val.uniq!
+  input = input.split''
+  @val = (4..input.size).flat_map{|n| (input).to_a.permutation(n).map(&:join)}
 end
 
 def word_checker
-
   while true
-    puts "Enter a word and I'll check if it's in the dictionary"
+    puts "Enter a word and I'll give you all valid dictionary anagrams"
     input = gets.downcase
     anagram_builder(input)
-     #  puts "Comparing {#@words} and {#i}"
-      @val.each do |x|
-        if @words.include? x.chomp
-        puts " #{x} is a valid word"
+    @val.each do |x|
+      if @words.include? x
+        puts x
       end
     end
   end
