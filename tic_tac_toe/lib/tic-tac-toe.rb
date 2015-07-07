@@ -85,7 +85,6 @@ class TicTacToe
   def self.win_game(values)
     if values.count("O") == 2 && values.count("X") != 1
       values.delete("O")
-      puts values.first
       values.first.to_s
     end
   end
@@ -93,7 +92,6 @@ class TicTacToe
   def self.block_player(values)
     if values.count("X") == 2 && values.count("O") != 1
       values.delete("X")
-      puts values
       values.first.to_s
     end
   end
