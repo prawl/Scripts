@@ -1,6 +1,4 @@
-require "tic_tac_toe/version"
-
-module TicTacToe
+class TicTacToe
   def self.draw_board(game_board)
   puts "
   #{game_board[0]} | #{game_board[1]}  | #{game_board[2]} 
@@ -87,6 +85,7 @@ module TicTacToe
   def self.win_game(values)
     if values.count("O") == 2 && values.count("X") != 1
       values.delete("O")
+      puts values.first
       values.first.to_s
     end
   end
@@ -94,6 +93,7 @@ module TicTacToe
   def self.block_player(values)
     if values.count("X") == 2 && values.count("O") != 1
       values.delete("X")
+      puts values
       values.first.to_s
     end
   end
@@ -149,6 +149,12 @@ module TicTacToe
     false
   end
 
+  def self.valid_move(game_board, user_input)
+    valid_move = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    return true if valid_move.include?(user_input)
+    false
+  end
+
   def self.play_game
     user_input = prompt_text "Welcome to unbeatable Tic Tac Toe, prepare to cry.  Not like it matters but do you want to go first? [Y/N]"
     user_input == "Y"? player_first = true : player_first = false
@@ -157,6 +163,9 @@ module TicTacToe
       if player_first
         draw_board(game_board)
         user_input = prompt_text "Enter a number between 1 and 9 to make your move"
+        while !valid_move(game_board, user_input)
+          user_input = prompt_text "Enter a number between 1 and 9 to make your move"
+        end
         game_board = play_spot(game_board, user_input.to_s.strip, "X")
         computer_input = determine_computers_move(game_board)
         game_board = play_spot(game_board, computer_input, "O")
@@ -166,6 +175,9 @@ module TicTacToe
         draw_board(game_board)
         break if game_complete(game_board) # Check if computer has won before allowing player to move
         user_input = prompt_text "Enter a number between 1 and 9 to make your move"
+        while !valid_move(game_board, user_input)
+          user_input = prompt_text "Enter a number between 1 and 9 to make your move"
+        end
         game_board = play_spot(game_board, user_input.to_s.strip, "X")
       end
     end
@@ -174,3 +186,4 @@ module TicTacToe
     play_game if user_input == "Y"
   end
 end
+# TicTacToe.play_game

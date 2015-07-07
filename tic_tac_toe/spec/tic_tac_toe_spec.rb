@@ -106,4 +106,19 @@ describe 'TicTacToe' do
       end
     end
   end
+
+  describe '.valid_move' do
+    let(:valid_input)  { "1" }
+    let(:invalid_input)  { "Junk" }
+    let(:valid_move) { TicTacToe.valid_move(board, valid_input) }
+    let(:invalid_move) { TicTacToe.valid_move(board, invalid_input) }
+
+    it 'keeps prompting for input until valid' do
+      expect(invalid_move).to eq(false)
+    end
+
+    it 'keep prompting for input until valid' do
+      expect(valid_move).to eq(true)
+    end
+  end
 end
