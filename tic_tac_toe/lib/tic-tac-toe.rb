@@ -148,8 +148,7 @@ class TicTacToe
   end
 
   def self.valid_move(game_board, user_input)
-    valid_move = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-    return true if valid_move.include?(user_input)
+    return true if initalize_board.include?(user_input)
     false
   end
 
