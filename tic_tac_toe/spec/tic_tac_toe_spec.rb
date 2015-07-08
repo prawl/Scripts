@@ -107,6 +107,34 @@ describe 'TicTacToe' do
     end
   end
 
+  describe '.ai_movement' do
+    context 'player has a potential win' do
+      let (:block_player) { ['2', 'X', 'X'] }
+      before { TicTacToe.ai_movement(block_player) }
+
+      it 'blocks the player' do
+        expect(block_player).to eq (["2"])
+      end
+    end
+
+    context 'computer has a potential win' do
+      let (:win_game) { ['O', 'O', '6'] }
+      before { TicTacToe.ai_movement(win_game) }
+
+      it 'wins the game' do
+        expect(win_game).to eq (["6"])
+      end
+    end
+
+    context 'no potential win' do
+      let (:not_valid) { TicTacToe.ai_movement (['1', '2', '3']) }
+
+      it 'returns nil' do
+        expect(not_valid).to eq (nil)
+      end
+    end
+  end
+
   describe '.valid_move' do
     let(:valid_input)  { "1" }
     let(:invalid_input)  { "Junk" }

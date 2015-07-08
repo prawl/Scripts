@@ -66,33 +66,33 @@ class TicTacToe
 
   def self.try_to_win(game_board)
     extract_horizontal(game_board).each do |row|
-      computer_input = win_game(row)
+      computer_input = ai_movement(row)
       return computer_input if computer_input
     end
 
     extract_veritical(game_board).each do |column|
-      computer_input = win_game(column)
+      computer_input = ai_movement(column)
       return computer_input if computer_input
     end
 
     extract_diagonal(game_board).each do |diag|
-      computer_input = win_game(diag)
+      computer_input = ai_movement(diag)
       return computer_input if computer_input
     end
     nil
   end
 
-  def self.win_game(values)
+  def self.ai_movement(values)
+    #win game
     if values.count("O") == 2 && values.count("X") != 1
       values.delete("O")
-      values.first.to_s
+      return values.first.to_s
     end
-  end
 
-  def self.block_player(values)
+    #block player
     if values.count("X") == 2 && values.count("O") != 1
       values.delete("X")
-      values.first.to_s
+      return values.first.to_s
     end
   end
 
@@ -101,17 +101,17 @@ class TicTacToe
     return computer_input if computer_input
 
     extract_horizontal(game_board).each do |row|
-      computer_input = block_player(row)
+      computer_input = ai_movement(row)
       return computer_input if computer_input
     end
 
     extract_veritical(game_board).each do |column|
-      computer_input = block_player(column)
+      computer_input = ai_movement(column)
       return computer_input if computer_input
     end
 
     extract_diagonal(game_board).each do |diag|
-      computer_input = block_player(diag)
+      computer_input = ai_movement(diag)
       return computer_input if computer_input
     end
 
