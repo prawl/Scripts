@@ -29,32 +29,6 @@ describe 'TicTacToe' do
     end
   end
 
-  describe '.try_to_win' do
-    let(:diagonal_winning_play) { ['O', '2', '3', '4', 'O', '6', '7', '8', '9'] }
-    let(:win_diag) { TicTacToe.try_to_win(diagonal_winning_play) }
-    context 'diagonal win' do
-      it 'picks the winning spot for the computer' do
-        expect(win_diag).to eq('9')
-      end
-    end
-
-    let(:horizontal_winning_play) { ['O', 'O', '3', '4', '5', '6', '7', '8', '9'] }
-    let(:win_hori) { TicTacToe.try_to_win(horizontal_winning_play) }
-    context 'horizontal win' do
-      it 'picks the winning spot for the computer' do
-        expect(win_hori).to eq('3')
-      end
-    end
-
-    let(:virtical_winning_play) { ['O', '2', '3', 'O', '5', '6', '7', '8', '9'] }
-    let(:win_virt) { TicTacToe.try_to_win(virtical_winning_play) }
-    context 'virtical win' do
-      it 'picks the winning spot for the computer' do
-        expect(win_virt).to eq('7')
-      end
-    end
-  end
-
   describe '.determine_computers_move' do
     let(:diagonal_block_play) { ['X', '2', '3', '4', '5', '6', '7', '8', 'X'] }
     let(:block_diag) { TicTacToe.determine_computers_move(diagonal_block_play) }
@@ -126,6 +100,14 @@ describe 'TicTacToe' do
       end
     end
 
+    context 'game is over' do
+      let (:game_over) { TicTacToe.ai_movement(['O', 'O', 'O']) }
+
+      it '3 matching pieces' do
+        expect(game_over).to eq(true)
+      end
+    end
+
     context 'no potential win' do
       let (:not_valid) { TicTacToe.ai_movement (['1', '2', '3']) }
 
@@ -147,6 +129,13 @@ describe 'TicTacToe' do
 
     it 'keep prompting for input until valid' do
       expect(valid_move).to eq(true)
+    end
+  end
+
+  describe '.game_state' do
+    let(:state) { }
+    it 'determine that the game is over' do
+     #  expect(state).to eq(true)
     end
   end
 end

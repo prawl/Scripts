@@ -64,22 +64,28 @@ class TicTacToe
     game_board
   end
 
-  def self.try_to_win(game_board)
+
+  def self.game_complete(game_board)
     extract_horizontal(game_board).each do |row|
-      computer_input = ai_movement(row)
-      return computer_input if computer_input
+      return true if winning_condition(row)
     end
 
     extract_veritical(game_board).each do |column|
-      computer_input = ai_movement(column)
-      return computer_input if computer_input
+      return true if ai_movement(column)
     end
 
     extract_diagonal(game_board).each do |diag|
-      computer_input = ai_movement(diag)
-      return computer_input if computer_input
+      return true if winning_condition(diag)
     end
-    nil
+
+    spots = 0
+    game_board.map { |i| spots += 1 if i == 'X' || i == 'O' }
+    return true if spots == 9
+    false
+  end
+
+  def self.winning_condition(values)
+    true if values.count("O") == 3
   end
 
   def self.ai_movement(values)
@@ -94,12 +100,10 @@ class TicTacToe
       values.delete("X")
       return values.first.to_s
     end
+    return true if values.count("X") == 3 || values.count('O') == 3
   end
 
   def self.determine_computers_move(game_board)
-    computer_input = try_to_win(game_board)
-    return computer_input if computer_input
-
     extract_horizontal(game_board).each do |row|
       computer_input = ai_movement(row)
       return computer_input if computer_input
@@ -128,24 +132,6 @@ class TicTacToe
     user_input = gets.chomp.upcase
   end
 
-  def self.game_complete(game_board)
-    extract_horizontal(game_board).each do |row|
-      return true if winning_condition(row)
-    end
-
-    extract_veritical(game_board).each do |column|
-      return true if winning_condition(column)
-    end
-
-    extract_diagonal(game_board).each do |diag|
-      return true if winning_condition(diag)
-    end
-
-    spots = 0
-    game_board.map { |i| spots += 1 if i == 'X' || i == 'O' }
-    return true if spots == 9
-    false
-  end
 
   def self.valid_move(game_board, user_input)
     return true if initalize_board.include?(user_input)
