@@ -64,14 +64,13 @@ class TicTacToe
     game_board
   end
 
-
   def self.game_complete(game_board)
     extract_horizontal(game_board).each do |row|
       return true if winning_condition(row)
     end
 
     extract_veritical(game_board).each do |column|
-      return true if ai_movement(column)
+      return true if winning_condition(column)
     end
 
     extract_diagonal(game_board).each do |diag|
@@ -88,7 +87,7 @@ class TicTacToe
     true if values.count("O") == 3
   end
 
-  def self.ai_movement(values)
+  def self.ai_calculate(values)
     #win game
     if values.count("O") == 2 && values.count("X") != 1
       values.delete("O")
@@ -100,22 +99,21 @@ class TicTacToe
       values.delete("X")
       return values.first.to_s
     end
-    return true if values.count("X") == 3 || values.count('O') == 3
   end
 
   def self.determine_computers_move(game_board)
     extract_horizontal(game_board).each do |row|
-      computer_input = ai_movement(row)
+      computer_input = ai_calculate(row)
       return computer_input if computer_input
     end
 
     extract_veritical(game_board).each do |column|
-      computer_input = ai_movement(column)
+      computer_input = ai_calculate(column)
       return computer_input if computer_input
     end
 
     extract_diagonal(game_board).each do |diag|
-      computer_input = ai_movement(diag)
+      computer_input = ai_calculate(diag)
       return computer_input if computer_input
     end
 
@@ -127,15 +125,18 @@ class TicTacToe
     return computer_input
   end
 
+  def self.valid_move(game_board, user_input)
+    if game_board.include?(user_input)
+      true
+    else
+      puts 'Hey, your input wasnt a valid spot on the board, try again pal!'
+      false
+    end
+  end
+
   def self.prompt_text(text)
     puts text
     user_input = gets.chomp.upcase
-  end
-
-
-  def self.valid_move(game_board, user_input)
-    return true if initalize_board.include?(user_input)
-    false
   end
 
   def self.play_game
@@ -165,8 +166,8 @@ class TicTacToe
       end
     end
     draw_board(game_board) if player_first
-    user_input = prompt_text "You lose! Wanna lose again? [Y/N]"
+    user_input = prompt_text "Of course you didn't win, want to lose again? [Y/N]"
     play_game if user_input == "Y"
   end
 end
-# TicTacToe.play_game
+TicTacToe.play_game

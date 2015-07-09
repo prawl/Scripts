@@ -81,10 +81,10 @@ describe 'TicTacToe' do
     end
   end
 
-  describe '.ai_movement' do
+  describe '.ai_calculate' do
     context 'player has a potential win' do
       let (:block_player) { ['2', 'X', 'X'] }
-      before { TicTacToe.ai_movement(block_player) }
+      before { TicTacToe.ai_calculate(block_player) }
 
       it 'blocks the player' do
         expect(block_player).to eq (["2"])
@@ -93,23 +93,15 @@ describe 'TicTacToe' do
 
     context 'computer has a potential win' do
       let (:win_game) { ['O', 'O', '6'] }
-      before { TicTacToe.ai_movement(win_game) }
+      before { TicTacToe.ai_calculate(win_game) }
 
       it 'wins the game' do
         expect(win_game).to eq (["6"])
       end
     end
 
-    context 'game is over' do
-      let (:game_over) { TicTacToe.ai_movement(['O', 'O', 'O']) }
-
-      it '3 matching pieces' do
-        expect(game_over).to eq(true)
-      end
-    end
-
     context 'no potential win' do
-      let (:not_valid) { TicTacToe.ai_movement (['1', '2', '3']) }
+      let (:not_valid) { TicTacToe.ai_calculate (['1', '2', '3']) }
 
       it 'returns nil' do
         expect(not_valid).to eq (nil)
@@ -129,13 +121,6 @@ describe 'TicTacToe' do
 
     it 'keep prompting for input until valid' do
       expect(valid_move).to eq(true)
-    end
-  end
-
-  describe '.game_state' do
-    let(:state) { }
-    it 'determine that the game is over' do
-     #  expect(state).to eq(true)
     end
   end
 end
