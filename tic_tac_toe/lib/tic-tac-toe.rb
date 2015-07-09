@@ -126,12 +126,8 @@ class TicTacToe
   end
 
   def self.valid_move(game_board, user_input)
-    if game_board.include?(user_input)
-      true
-    else
-      puts 'Hey, your input wasnt a valid spot on the board, try again pal!'
-      false
-    end
+    return true if game_board.include?(user_input)
+    false
   end
 
   def self.prompt_text(text)
@@ -148,7 +144,7 @@ class TicTacToe
         draw_board(game_board)
         user_input = prompt_text "Enter a number between 1 and 9 to make your move"
         while !valid_move(game_board, user_input)
-          user_input = prompt_text "Enter a number between 1 and 9 to make your move"
+          user_input = prompt_text 'Hey, your input wasnt a valid spot on the board, try again pal!'
         end
         game_board = play_spot(game_board, user_input.to_s.strip, "X")
         computer_input = determine_computers_move(game_board)
@@ -160,7 +156,7 @@ class TicTacToe
         break if game_complete(game_board) # Check if computer has won before allowing player to move
         user_input = prompt_text "Enter a number between 1 and 9 to make your move"
         while !valid_move(game_board, user_input)
-          user_input = prompt_text "Enter a number between 1 and 9 to make your move"
+          user_input = prompt_text 'Hey, your input wasnt a valid spot on the board, try again pal!'
         end
         game_board = play_spot(game_board, user_input.to_s.strip, "X")
       end
