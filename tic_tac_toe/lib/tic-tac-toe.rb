@@ -1,4 +1,8 @@
 class TicTacToe
+  def self.initalize_board
+    ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+  end
+
   def self.draw_board(game_board)
   puts "
   #{game_board[0]} | #{game_board[1]}  | #{game_board[2]} 
@@ -7,10 +11,6 @@ class TicTacToe
   ----------
   #{game_board[6]} | #{game_board[7]}  | #{game_board[8]} 
   "
-  end
-
-  def self.initalize_board
-    ['1', '2', '3', '4', '5', '6', '7', '8', '9']
   end
 
   def self.extract_horizontal(game_board)
@@ -81,10 +81,6 @@ class TicTacToe
     game_board.map { |i| spots += 1 if i == 'X' || i == 'O' }
     return true if spots == 9
     false
-  end
-
-  def self.winning_condition(values)
-    true if values.count("O") == 3
   end
 
   def self.ai_calculate(values)
@@ -162,7 +158,7 @@ class TicTacToe
       end
     end
     draw_board(game_board) if player_first
-    user_input = prompt_text "Of course you didn't win, want to lose again? [Y/N]"
+    user_input = prompt_text "Of course you didn't win, want to try again? [Y/N]"
     play_game if user_input == "Y"
   end
 end
