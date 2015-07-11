@@ -36,16 +36,11 @@ describe 'TicTacToe' do
     it 'saves user input into the game board' do
       expect(valid_play).to eq(['X', '2', '3', '4', '5', '6', '7', '8', '9'])
     end
-
-    let(:invalid_play) { TicTacToe.play_spot(board, user_input, 'Z' )}
-    it 'blocks invalid input' do
-      expect(invalid_play).to eq(board)
-    end
   end
 
   describe '.game_complete' do
     let(:winning_board) { ['O', '2', '3', '4', 'O', '6', '7', '8', 'O'] }
-    let(:win) { TicTacToe.game_complete(winning_board) }
+    let(:win) { TicTacToe.game_complete?(winning_board) }
     context 'player win' do
       it 'returns true' do
         expect(win).to eq(true)
@@ -53,30 +48,24 @@ describe 'TicTacToe' do
     end
   end
 
-  describe '.ai_calculate' do
+  describe '.block_player' do
     context 'player has a potential win' do
       let (:block_player) { ['2', 'X', 'X'] }
-      before { TicTacToe.ai_calculate(block_player) }
+      before { TicTacToe.check_block(block_player) }
 
       it 'blocks the player' do
         expect(block_player).to eq (["2"])
       end
     end
+  end
 
+  describe '.check_win' do
     context 'computer has a potential win' do
       let (:win_game) { ['O', 'O', '6'] }
-      before { TicTacToe.ai_calculate(win_game) }
+      before { TicTacToe.check_win(win_game) }
 
       it 'wins the game' do
         expect(win_game).to eq (["6"])
-      end
-    end
-
-    context 'no potential win' do
-      let (:not_valid) { TicTacToe.ai_calculate (['1', '2', '3']) }
-
-      it 'returns nil' do
-        expect(not_valid).to eq (nil)
       end
     end
   end
@@ -114,11 +103,35 @@ describe 'TicTacToe' do
       end
     end
 
-    let(:randomly_picked_play) { ['1', '2', '3', '4', 'X', '6', '7', '8', '9'] }
-    let(:random) { TicTacToe.determine_computers_move(randomly_picked_play) }
-    context 'randomly pick a spot ' do
-      it 'picks a corner spot' do
-        expect(["1","3","7","9"]).to include(random)
+    let(:random) { ['1', '2', '3', '4', 'X', '6', '7', '8', '9'] }
+    let(:randomly_picked_play) { TicTacToe.determine_computers_move(random) }
+    context '' do
+      it '' do
+        expect(random).to include(randomly_picked_play)
+      end
+    end
+  end
+
+  describe '.available_spots' do
+    let(:available) { TicTacToe.available_spots(['O', 'X', 'X', '4', '5', 'O', '7', '8', 'X']) }
+    let(:spots) { ['4', '5', '7', '8'] }
+    it 'gives the available spots that can be played' do
+      expect(spots).to include(available)
+    end
+  end
+
+  describe '.game_board' do
+    context 'not full' do
+      let(:plays) { TicTacToe.board_full?(['O', 'X', 'X', '4', '5', 'O', '7', '8', 'X']) }
+      it 'determined when no available spots are left' do
+        expect(plays).to eq(false)
+      end
+    end
+
+    context 'full' do
+    let(:plays) { TicTacToe.board_full?(['O', 'X', 'X', 'X', 'O', 'O', 'X', 'O', 'X']) }
+      it 'determines when the board is full' do
+        expect(plays).to eq(true)
       end
     end
   end
@@ -126,8 +139,8 @@ describe 'TicTacToe' do
   describe '.valid_move' do
     let(:valid_input)  { "1" }
     let(:invalid_input)  { "Junk" }
-    let(:valid_move) { TicTacToe.valid_move(board, valid_input) }
-    let(:invalid_move) { TicTacToe.valid_move(board, invalid_input) }
+    let(:valid_move) { TicTacToe.valid_move?(board, valid_input) }
+    let(:invalid_move) { TicTacToe.valid_move?(board, invalid_input) }
 
     it 'keeps prompting for input until valid' do
       expect(invalid_move).to eq(false)
