@@ -103,7 +103,10 @@ class TicTacToe
   end
 
   def self.special_case(game_board)
-    return '4' if (((game_board[0] && game_board[8]) == 'X' || (game_board[2] && game_board[6])  == 'X') && (game_board[3] == '4'))
+    # Player controls two corners, need a side
+    return available_spots([game_board[1], game_board[3], game_board[5], game_board[7]]) if (((game_board[0] && game_board[8]) == 'X' || (game_board[2] && game_board[6])  == 'X') && (game_board[3] == '4'))
+    # Player controls the middle, need a corner
+    return available_spots([game_board[0], game_board[2], game_board[6], game_board[8]]) if game_board[4] == 'X'
   end
 
   def self.available_spots(game_board)

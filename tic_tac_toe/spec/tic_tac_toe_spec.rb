@@ -150,4 +150,23 @@ describe 'TicTacToe' do
       expect(valid_move).to eq(true)
     end
   end
+
+  describe '.special_case' do
+    let(:corners) { ['1', '3', '7', '9'] }
+    let(:mids) { ['2', '4', '6', '8'] }
+    context 'player controls two corners' do
+      let(:board) { TicTacToe.special_case(['X', '2', '3', '4', 'O', '6', '7', '8', 'X'])  }
+      it 'computer always picks a side' do
+        expect(mids).to include(board)
+        expect(corners).not_to include(board)
+      end
+    end
+    context 'player picks middle' do
+      let(:board) { TicTacToe.special_case(['1', '2', '3', '4', 'X', '6', '7', '8', '9'])  }
+      it 'computer always picks a corner' do
+        expect(corners).to include(board)
+        expect(mids).not_to include(board)
+      end
+    end
+  end
 end
