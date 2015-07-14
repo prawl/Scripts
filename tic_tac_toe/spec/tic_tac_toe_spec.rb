@@ -168,5 +168,12 @@ describe 'TicTacToe' do
         expect(mids).not_to include(board)
       end
     end
+    context 'player picks middle and controls 1 corner' do
+      let(:board) { TicTacToe.special_case(['O', '2', '3', '4', 'X', '6', '7', '8', 'X'])  }
+      it 'computer always picks a corner' do
+        expect(corners).to include(board)
+        expect(mids).not_to include(board)
+      end
+    end
   end
 end
