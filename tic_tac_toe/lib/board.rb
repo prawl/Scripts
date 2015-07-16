@@ -8,8 +8,16 @@ class Board
   #2) Must hold game pieces
   
   def print
-    (0..size).each do |i|
+    board = ''
+    (1..size).each do |i|
+      if i % Math.sqrt(size) == 0 && i != 1
+        board << " #{i} \n"
+        board << "------------------ \n" if i != size
+      else
+        board << " #{i} |"
+      end
     end
+    board
   end
 
   def initialize(size=nil)
@@ -19,5 +27,4 @@ class Board
   def size 
     @game_slots.size
   end
-
 end
