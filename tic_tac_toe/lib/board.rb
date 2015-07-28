@@ -3,28 +3,33 @@ class Board
 
   attr_accessor :game_slots
 
-  #Requirements:
-  #1) Must scale with size
-  #2) Must hold game pieces
-  
-  def print
-    board = ''
-    (1..size).each do |i|
-      if i % Math.sqrt(size) == 0 && i != 1
-        board << " #{i} \n"
-        board << "------------------ \n" if i != size
-      else
-        board << " #{i} |"
-      end
-    end
-    board
+  def initialize(size = nil)
+    @game_slots = Array.new((size || BOARD_SIZE)**2)
+    populate_slots
   end
 
-  def initialize(size=nil)
-    @game_slots = Array.new((size || BOARD_SIZE)**2)
+  def populate_slots
+    (1..size).map { |i| @game_slots[i-1] = i.to_s }
   end
 
   def size 
     @game_slots.size
+  end
+
+  def grid_size
+    Math.sqrt(@game_slots.size).to_i
+  end
+
+  def play_position(board_position, game_piece)
+     @game_slots[board_position.to_i-1] = game_piece
+     @game_slots
+  end
+
+  def board_full?
+    @game_slots.all? { |pos| pos == 'X' || pos ==  'O' }
+  end
+
+  def available?(user_input)
+    @game_slots.include?(user_input)
   end
 end
