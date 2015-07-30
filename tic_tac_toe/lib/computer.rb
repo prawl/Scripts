@@ -24,9 +24,9 @@ class Computer
   end
 
   def score(board)
-    if board.winner? == piece
+    if board.winning_piece == @game_piece
       return 10
-    elsif  board.winner == opponent
+    elsif  board.winning_piece == swap_pieces(@game_piece)
       return -10
     end
     0
