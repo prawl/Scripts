@@ -91,16 +91,7 @@ describe Board do
     end
   end
 
-  describe '.vertical_wins' do
-    let (:exctract_vertical) { board.vertical_wins }
-    let(:vertial) { [ ['1','4','7'], ['2','5','8'], ['3','6','9'] ] }
-
-    it 'extracts all vertial win potentials' do
-      expect(exctract_vertical).to eq(vertial)
-    end
-  end
-
-  describe '.winning positions' do
+  describe '.winning_positions' do
     let(:vertical_wins) { board.vertical_wins }
     let(:horizontal_wins) { board.horizontal_wins }
     let(:diagonal_wins) { board.diagonal_wins }
@@ -108,28 +99,16 @@ describe Board do
     let(:horizontal) { [ ['1','2','3'], ['4','5','6'], ['7','8','9'] ] }
     let(:vertical) { [ ['1','4','7'], ['2','5','8'], ['3','6','9'] ] }
 
-    context 'empty board' do
-      it 'gives all possible vertical wins posiitions' do
-        expect(vertical_wins).to eq(vertical)
-      end
-
-      it 'gives all possible horizontal winning posiitions' do
-        expect(horizontal_wins).to eq(horizontal)
-      end
-
-      it 'gives all possible diagonal winning posiitions' do
-        expect(diagonal_wins).to eq(diagonal)
-      end
+    it 'all possible vertical wins' do
+      expect(vertical_wins).to eq(vertical)
     end
 
-    context 'non-empty board' do
-      let!(:test) { board.game_slots = ['X', '2', '3', 'X', '5', '6', 'X', '8', '9'] }
-      let(:vertical) { [ ['X','X','X'], ['2','5','8'], ['3','6','9'] ] }
-      let(:vertical_wins) { board.vertical_wins }
+    it 'all possible horizontal wins' do
+      expect(horizontal_wins).to eq(horizontal)
+    end
 
-      it 'gives all possible vertical wins posiitions' do
-        expect(vertical_wins).to eq(vertical)
-      end
+    it 'all possible diagonal wins' do
+      expect(diagonal_wins).to eq(diagonal)
     end
   end
 
@@ -137,15 +116,42 @@ describe Board do
     let(:winner) { board.winner? }
 
     context 'winning condition found' do
-      let!(:test) { board.game_slots = ['X', 'X', 'X', '4', '5', '6', '7', '8', '9'] }
+      let!(:win) { board.game_slots = ['O', 'O', 'O', '4', '5', '6', '7', '8', '9'] }
       it 'returns true' do
         expect(winner).to eq(true)
       end
     end
 
     context 'winning condition not found' do
+      let!(:no_win) { board.game_slots = ['X', 'O', 'X', '4', '5', '6', '7', '8', '9'] }
+
       it 'returns false' do
         expect(winner).to eq(false)
+      end
+    end
+  end
+
+  describe '.winning_piece' do
+    let(:winning) { board.winning_piece }
+
+    context 'X won' do
+      let!(:win_1) { board.game_slots = ['X', 'X', 'X', '4', '5', '6', '7', '8', '9'] }
+      it 'return X' do
+        expect(winning).to eq("X")
+      end
+    end
+
+    context 'O won' do
+      let!(:win_2) { board.game_slots = ['O', '2', '3', 'O', '5', '6', 'O', '8', '9'] }
+      it 'return O' do
+        expect(winning).to eq("O")
+      end
+    end
+
+    context 'neither won' do
+      let!(:no_win) { board.game_slots = ['X', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'O'] }
+      it 'returns nil' do
+        expect(winning).to eq(nil)
       end
     end
   end

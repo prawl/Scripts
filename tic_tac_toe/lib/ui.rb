@@ -1,45 +1,36 @@
 class UI
   def exposition
-    puts "Welcome to unbeatable Tic Tac Toe, prepare to cry.  You can quit at any time by pressing Q"
+    puts "\nWelcome to unbeatable Tic Tac Toe, prepare to cry.  You can quit at any time by pressing Q"
   end
 
   def turn(player)
-    new_line
-    puts "It's the #{player} turn!"
+    puts "\nIt's the #{player} turn!"
   end
   
   def winner
-    new_line
-    puts "The computer won!" 
+    puts "\nThe computer won!" 
+    abort
   end
   
   def tie
-    new_line
-    puts "The game ended in a tie!  I told you that you were not going to win"
+    puts "\nThe game ended in a tie!  I told you that you were not going to win"
+    abort
   end
 
   def invalid_input
-    new_line
-    puts "Oops! Looks like your input was invalid."
+    puts "\nOops! Looks like your input was invalid."
   end
   
   def prompt_move(board)
-    new_line
-    puts "Please enter a number between 1 and #{board.size} to make your move"
+    puts "\nPlease enter a number between 1 and #{board.size} to make your move"
   end
 
   def quit
-    new_line
-    puts "Would you like to quit the game?"
+    puts "\nWould you like to quit the game?"
   end
 
   def try_again
-    new_line
-    puts "Would you like to play again?"
-  end
-
-  def new_line
-    puts "\n"
+    puts "\nWould you like to play again?"
   end
 
   def display_board(board)
@@ -53,7 +44,7 @@ class UI
         output << " #{board.game_slots[index-1]} |"
       end
     end
-    new_line
+    puts "\n"
     puts output
   end
 end

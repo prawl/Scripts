@@ -9,6 +9,10 @@ class Board
     populate_slots
   end
 
+  def available?(user_input)
+    @game_slots.include?(user_input)
+  end
+
   def populate_slots
     (1..size).map { |i| @game_slots[i-1] = i.to_s }
   end
@@ -72,11 +76,17 @@ class Board
    [vertical_wins, horizontal_wins, diagonal_wins]
   end
 
-  def winner?
-    winning_positions.flatten(1).map { |pos| pos.all? { |win| win == 'X' || win == 'O' } }.any?
+  def winning_piece
+    (winner?)? winning_combo[0] : nil
   end
 
-  def available?(user_input)
-    @game_slots.include?(user_input)
+  def winner?
+    winning_combo.any?
+  end
+
+  private
+
+  def winning_combo
+    winning_positions.flatten(1).map { |pos| return pos if pos.count("X") == grid_size || pos.count("O") == grid_size }
   end
 end

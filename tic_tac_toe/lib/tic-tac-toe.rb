@@ -24,8 +24,10 @@ class TicTacToe
       ui.prompt_move(board)
       player.play_piece(board, ui, player.game_piece)
       ui.display_board(board)
+     #  player.game_piece = computer.swap_pieces(player.game_piece)
 
-      player.game_piece = computer.swap_pieces(player.game_piece)
+      ui.tie if board.tie?
+      ui.winner if board.winner?
     end
 
   end
