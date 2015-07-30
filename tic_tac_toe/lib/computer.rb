@@ -8,11 +8,14 @@ class Computer
   #switch players
   #game over
   # Add a super class to this? 
-  def initialize(piece)
+  def initialize(piece=nil)
     @game_piece = piece
   end
 
   def swap_pieces(piece)
     piece == "X"? "O" : "X" 
+  end
+
+  def game_over?(board)
   end
 end

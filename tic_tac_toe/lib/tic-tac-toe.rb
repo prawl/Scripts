@@ -17,8 +17,8 @@ class TicTacToe
     ui.exposition
     ui.display_board(board)
 
-    # player = human
-    # challenger = computer 
+    player_one = player
+    player_two = computer 
 
     while true
       ui.prompt_move(board)

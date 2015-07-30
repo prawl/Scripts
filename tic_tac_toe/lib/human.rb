@@ -2,7 +2,7 @@ class Human
   attr_accessor :game_piece
 
   # Add a super class to this? 
-  def initialize(piece)
+  def initialize(piece=nil)
     @game_piece = piece
   end
 

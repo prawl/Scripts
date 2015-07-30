@@ -52,8 +52,8 @@ describe Board do
     end
   end
 
-  describe '#board_full?' do
-    let(:game) { board.board_full? }
+  describe '#tie?' do
+    let(:game) { board.tie? }
 
     context 'is full' do
       before do
@@ -88,6 +88,65 @@ describe Board do
 
     it 'space is not available' do
       expect(available).to eq(true)
+    end
+  end
+
+  describe '.vertical_wins' do
+    let (:exctract_vertical) { board.vertical_wins }
+    let(:vertial) { [ ['1','4','7'], ['2','5','8'], ['3','6','9'] ] }
+
+    it 'extracts all vertial win potentials' do
+      expect(exctract_vertical).to eq(vertial)
+    end
+  end
+
+  describe '.winning positions' do
+    let(:vertical_wins) { board.vertical_wins }
+    let(:horizontal_wins) { board.horizontal_wins }
+    let(:diagonal_wins) { board.diagonal_wins }
+    let(:diagonal) { [ ['1','5','9'], ['3','5','7'] ]  }
+    let(:horizontal) { [ ['1','2','3'], ['4','5','6'], ['7','8','9'] ] }
+    let(:vertical) { [ ['1','4','7'], ['2','5','8'], ['3','6','9'] ] }
+
+    context 'empty board' do
+      it 'gives all possible vertical wins posiitions' do
+        expect(vertical_wins).to eq(vertical)
+      end
+
+      it 'gives all possible horizontal winning posiitions' do
+        expect(horizontal_wins).to eq(horizontal)
+      end
+
+      it 'gives all possible diagonal winning posiitions' do
+        expect(diagonal_wins).to eq(diagonal)
+      end
+    end
+
+    context 'non-empty board' do
+      let!(:test) { board.game_slots = ['X', '2', '3', 'X', '5', '6', 'X', '8', '9'] }
+      let(:vertical) { [ ['X','X','X'], ['2','5','8'], ['3','6','9'] ] }
+      let(:vertical_wins) { board.vertical_wins }
+
+      it 'gives all possible vertical wins posiitions' do
+        expect(vertical_wins).to eq(vertical)
+      end
+    end
+  end
+
+  describe '.winner?' do
+    let(:winner) { board.winner? }
+
+    context 'winning condition found' do
+      let!(:test) { board.game_slots = ['X', 'X', 'X', '4', '5', '6', '7', '8', '9'] }
+      it 'returns true' do
+        expect(winner).to eq(true)
+      end
+    end
+
+    context 'winning condition not found' do
+      it 'returns false' do
+        expect(winner).to eq(false)
+      end
     end
   end
 end
