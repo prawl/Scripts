@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Board do
 
   let(:board) { Board.new }
-  let(:slots) { ['1', '2', '3', '4', '5', '6', '7', '8', '9'] }
-  let(:slots_x4) { ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'] }
+  let!(:slots) { [nil, nil, nil,nil, nil, nil,nil, nil, nil] }
+  let(:slots_x4) { [nil, nil, nil,nil, nil, nil,nil, nil, nil, nil, nil, nil, nil, nil, nil, nil] }
 
   describe '#initialize' do
     context 'by default' do
@@ -29,11 +29,10 @@ describe Board do
     end
   end
 
-  describe '#grid size' do
+  describe '#grid_size' do
     context '3x3 tic_tac_toe board' do
-      let(:grid_size) { board.grid_size }
       it 'returns the size of the grid' do
-        expect(grid_size).to eq(3)
+        expect(Board.new(3).grid_size).to eq(3)
       end
     end
 
@@ -45,20 +44,32 @@ describe Board do
   end
 
   describe '#play_position' do
-    let(:move) { board.play_position(1, 'X') }
-    let(:turn) { ['X', '2', '3', '4', '5', '6', '7', '8', '9'] }
-    it 'places the given game piece on the specified board position' do
-      expect(move).to eq(turn)
+    context 'play a position' do
+      let(:move) { board.play_position(1, 'X') }
+      let(:turn) { ['X', '2', '3', '4', '5', '6', '7', '8', '9'] }
+      it 'places the given game piece on the specified board position' do
+        expect(move).to eq('X')
+      end
     end
+
+    context 'board game slots should be unique' do
+      let!(:board_1) { Board.new }
+      let!(:board_2) { Board.new }
+      let!(:play) { board_1.play_position(0, "X") }
+
+      before { board_2 = board_1 }
+      it '' do
+        expect(board_1.game_slots).not_to eq(board_2.game_slots)
+      end
+    end
+
   end
 
   describe '#tie?' do
     let(:game) { board.tie? }
 
     context 'is full' do
-      before do
-         board.game_slots = ['X', 'O', 'O', 'X', 'O', 'X', 'O', 'O', 'X']
-      end
+      before { (0...9).map { |v| board.play_position(v, 'X') } }
 
       it 'determines when the game board is full' do
         expect(game).to eq(true)
@@ -66,9 +77,7 @@ describe Board do
     end
 
     context 'not full' do
-      before do
-         board.game_slots = ['X', '2', '3', '4', '5', '6', '7', '8', '9']
-      end
+      before { board.play_position(1, "X") }
 
       it 'determines when the game board is not full' do
         expect(game).to eq(false)
@@ -76,28 +85,13 @@ describe Board do
     end
   end
 
-  describe '.available?' do
-    let!(:move) { board.game_slots = ['X', '2', 'O', 'O', 'X', '6', 'O', '8', '9'] }
-    let(:not_available) { board.available?('4') }
-
-    it 'space is available' do
-      expect(not_available).to eq(false)
-    end
-
-    let(:available) { board.available?('2') }
-
-    it 'space is not available' do
-      expect(available).to eq(true)
-    end
-  end
-
   describe '.winning_positions' do
     let(:vertical_wins) { board.vertical_wins }
     let(:horizontal_wins) { board.horizontal_wins }
     let(:diagonal_wins) { board.diagonal_wins }
-    let(:diagonal) { [ ['1','5','9'], ['3','5','7'] ]  }
-    let(:horizontal) { [ ['1','2','3'], ['4','5','6'], ['7','8','9'] ] }
-    let(:vertical) { [ ['1','4','7'], ['2','5','8'], ['3','6','9'] ] }
+    let(:diagonal) { [ [0,4,8], [2,4,6] ]  }
+    let(:horizontal) { [ [0,1,2], [3,4,5], [6,7,8] ] }
+    let(:vertical) { [ [0,3,6], [1,4,7], [2,5,8] ] }
 
     it 'all possible vertical wins' do
       expect(vertical_wins).to eq(vertical)
@@ -116,14 +110,14 @@ describe Board do
     let(:winner) { board.winner? }
 
     context 'winning condition found' do
-      let!(:win) { board.game_slots = ['O', 'O', 'O', '4', '5', '6', '7', '8', '9'] }
+      let!(:win) { (0...3).map { |i| board.play_position(i, "O") } }
       it 'returns true' do
         expect(winner).to eq(true)
       end
     end
 
     context 'winning condition not found' do
-      let!(:no_win) { board.game_slots = ['X', 'O', 'X', '4', '5', '6', '7', '8', '9'] }
+      before { board.play_position(1, "X") }
 
       it 'returns false' do
         expect(winner).to eq(false)
@@ -135,23 +129,61 @@ describe Board do
     let(:winning) { board.winning_piece }
 
     context 'X won' do
-      let!(:win_1) { board.game_slots = ['X', 'X', 'X', '4', '5', '6', '7', '8', '9'] }
+      let!(:win_1) { (0...3).map { |i| board.play_position(i, "X") } }
       it 'return X' do
         expect(winning).to eq("X")
       end
     end
 
     context 'O won' do
-      let!(:win_2) { board.game_slots = ['O', '2', '3', 'O', '5', '6', 'O', '8', '9'] }
+      let!(:win_2) { (0...3).map { |i| board.play_position(i, "O") } }
       it 'return O' do
         expect(winning).to eq("O")
       end
     end
 
     context 'neither won' do
-      let!(:no_win) { board.game_slots = ['X', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'O'] }
-      it 'returns nil' do
-        expect(winning).to eq(nil)
+      let!(:win_3) { (0...9).map { |i| board.play_position(i, "Z") } }
+      it 'returns false' do
+        expect(winning).to eq(false)
+      end
+    end
+  end
+
+  describe '.available?' do
+    let!(:move) { [0,2,3,4,6].map { |i| board.play_position(i, "X") } }
+    let(:not_available) { board.available?(4) }
+
+    it 'space is available' do
+      expect(not_available).to eq(false)
+    end
+
+    let(:available) { board.available?(8) }
+
+    it 'space is not available' do
+      expect(available).to eq(true)
+    end
+
+    let(:junk) { board.available?('junk') }
+    it 'always false on junk input' do
+      expect(junk).to eq(false)
+    end
+  end
+
+  describe '.available_moves' do
+    context 'moves are available' do
+      let!(:moves) { [0,1,2,4].map { |i| board.play_position(i, "X") } }
+      let!(:available) { board.available_moves } 
+      it 'gives a list of moves that can be played' do
+        expect(available).to eq([3, 5, 6, 7, 8])
+      end
+    end
+
+    context 'no moves available' do
+      let!(:moves) { (0...9).map { |i| board.play_position(i, "O") } }
+      let!(:available) { board.available_moves } 
+      it 'returns an empty move set' do
+        expect(available).to eq([])
       end
     end
   end

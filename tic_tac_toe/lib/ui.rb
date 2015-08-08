@@ -11,6 +11,11 @@ class UI
     puts "\nThe computer won!" 
     abort
   end
+
+  def thinking
+    puts "\nThe computer is moving"
+    sleep 2
+  end
   
   def tie
     puts "\nThe game ended in a tie!  I told you that you were not going to win"

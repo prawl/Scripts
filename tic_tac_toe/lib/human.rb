@@ -1,12 +1,11 @@
 class Human
   attr_accessor :game_piece
 
-  # Add a super class to this? 
   def initialize(piece=nil)
     @game_piece = piece
   end
 
-  def play_piece(board, ui, piece)
+  def play_piece(board, ui)
     valid = false
 
     until valid
@@ -14,7 +13,7 @@ class Human
       exit if quit?(input)
       valid = valid_move?(ui, input, board)
     end
-    board.play_position(input, piece)
+    board.play_position(input, @game_piece)
   end
 
   def get_input
@@ -26,6 +25,7 @@ class Human
   end
 
   def valid_move?(ui, user_input, board)
+    ap board
     valid_move = board.available?(user_input)
     ui.invalid_input unless valid_move
     valid_move

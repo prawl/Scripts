@@ -11,8 +11,8 @@ describe Human do
     expect(user_input).to eq(true)
   end
 
-  describe '.valid_move' do
-    let!(:slots) { board.game_slots = ['X', '2', 'O', 'O', 'X', '6', 'O', '8', '9'] }
+  describe '.valid_move?' do
+    let!(:slots) { [1,3,4,5,7].map { |i|  board.play_position(i, "X") } }
 
     context 'invalid' do
       let(:move)  { player.valid_move?(ui, "Junk", board) }
@@ -23,7 +23,7 @@ describe Human do
     end
 
     context 'valid' do
-      let(:move)  { player.valid_move?(ui, '2', board) }
+      let(:move)  { player.valid_move?(ui, 2, board) }
       it 'does not prompt' do
         expect(move).to eq(true)
       end

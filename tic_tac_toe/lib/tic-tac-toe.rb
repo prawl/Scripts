@@ -4,11 +4,11 @@ require './ui'
 require './board'
 
 class TicTacToe
-  attr_accessor :ui, :player, :computer, :board
+  attr_reader :ui, :human, :computer, :board
 
   def initialize
     @ui = UI.new
-    @player = Human.new 'X'
+    @human = Human.new 'X'
     @computer = Computer.new 'O'
     @board = Board.new
   end
@@ -17,19 +17,22 @@ class TicTacToe
     ui.exposition
     ui.display_board(board)
 
-    player_one = player
-    player_two = computer 
+    player, opponent = human, computer
 
     while true
-      ui.prompt_move(board)
-      player.play_piece(board, ui, player.game_piece)
+     #  ui.prompt_move(board)
+
+     #  ui.turn(player.to_s)
+
+      player.play_piece(board, ui)
+
       ui.display_board(board)
-     #  player.game_piece = computer.swap_pieces(player.game_piece)
 
-      ui.tie if board.tie?
       ui.winner if board.winner?
-    end
+     #  ui.tie if board.tie?
 
+      player, opponent = opponent, player
+    end
   end
 end
 
