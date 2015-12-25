@@ -4,7 +4,7 @@ class GameState
   def initialize(state_size)
     @state_size = state_size
     @state = create_state
-    @position = state_size
+    @position = (state_size.to_f / 2).ceil
   end
 
   def advance
@@ -15,16 +15,24 @@ class GameState
     @position -= 1 unless min_limit
   end
 
+  def won?
+    max_limit
+  end
+
+  def loss?
+    min_limit
+  end
+
   private
 
   def create_state
     arr = []
-    (0...state_size).each { arr << "" }
+    (0...state_size).each { arr << " " }
     arr
   end
 
   def max_limit
-    @position >= state_size * 2
+    @position >= state_size + 1
   end
 
   def min_limit

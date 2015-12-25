@@ -1,14 +1,35 @@
 require 'spec_helper'
 
 describe GameState do
-  subject { GameState.new(3) }
+  subject { GameState.new(5) }
 
   it 'always starts in the middle' do
     expect(subject.position).to eq(3)
   end
 
   it 'creates the state size' do
-    expect(subject.state_size).to eq(3)
+    expect(subject.state_size).to eq(5)
+  end
+
+  describe '#loss?' do
+    it 'returns true when position is at the minimum' do
+      3.times { subject.recede }
+      expect(subject.loss?).to eq(true)
+    end
+
+    it 'return false when position is not as the minimum' do
+      expect(subject.loss?).to eq(false)
+    end
+  end
+
+  describe '#won?' do
+    it 'returns true when the position is at the maximum' do
+      3.times { subject.advance }
+      expect(subject.won?).to eq(true)
+    end
+
+    it 'returns false when the position is not at the maximum' do
+    end
   end
 
   describe "state" do
